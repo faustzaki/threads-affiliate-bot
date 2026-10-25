@@ -1,0 +1,7 @@
+PRODUK #4: Cardigan Rajut Crop Wanita Oversize
+Harga    : Rp72.000
+Kategori : outer
+Detail   : rajut halus ga gatal di kulit, penyelamat ruangan AC dingin, kancing hidup
+
+Taruh 2-3 gambar di folder ini.
+Prompt gambar: python affiliate_flow.py prompt --product-id 4

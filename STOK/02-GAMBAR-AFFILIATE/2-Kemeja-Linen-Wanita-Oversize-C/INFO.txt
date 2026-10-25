@@ -1,0 +1,7 @@
+PRODUK #2: Kemeja Linen Wanita Oversize Casual
+Harga    : Rp65.000
+Kategori : atasan
+Detail   : anti gerah, adem kena angin ojol, ga gampang lecek, cuttingan jatuh rapi
+
+Taruh 2-3 gambar di folder ini.
+Prompt gambar: python affiliate_flow.py prompt --product-id 2

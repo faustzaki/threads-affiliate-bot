@@ -1,0 +1,7 @@
+PRODUK #3: Irene One Set Crinkle Airflow Premium
+Harga    : Rp49.000
+Kategori : rumahan
+Detail   : bahan crinkle adem tanpa setrika, wudhu friendly, celana karet ga begah
+
+Taruh 2-3 gambar di folder ini.
+Prompt gambar: python affiliate_flow.py prompt --product-id 3

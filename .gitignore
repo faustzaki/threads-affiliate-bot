@@ -1,0 +1,99 @@
+# ═══ RAHASIA — JANGAN PERNAH COMMIT ═══
+.env
+.env.*
+*.env
+threads_session.json
+cookies.json
+chrome_bifrost_profile/
+**/cookies/
+*.cookie
+
+# ═══ DATABASE ═══
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+data/*.db
+
+# ═══ STATE RUNTIME ═══
+data/jitter_state.json
+data/fallback_captions.json
+data/products_inbox.json
+data/notion_config.json
+data/threads_research.json
+state.json
+
+# ═══ GAMBAR & MEDIA (besar, punya lo sendiri) ═══
+media/
+STOK/01-GAMBAR-RANDOM/**/*.jpg
+STOK/01-GAMBAR-RANDOM/**/*.jpeg
+STOK/01-GAMBAR-RANDOM/**/*.png
+STOK/01-GAMBAR-RANDOM/**/*.webp
+STOK/02-GAMBAR-AFFILIATE/**/*.jpg
+STOK/02-GAMBAR-AFFILIATE/**/*.jpeg
+STOK/02-GAMBAR-AFFILIATE/**/*.png
+STOK/02-GAMBAR-AFFILIATE/**/*.webp
+STOK/03-LINK-AFFILIATE/link-produk.json
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.jpg
+*.jpeg
+*.png
+*.webp
+!STOK/**/README.md
+
+# ═══ PYTHON ═══
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.venv/
+venv/
+env/
+
+# ═══ EDITOR / OS ═══
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ═══ LOG ═══
+*.log
+logs/
+
+# ═══ SCRIPT LOKAL (proyek lain, gak relevan) ═══
+polish_video.py
+render_new_brand.py
+render_sample.py
+clone_bifrost_profile.py
+import_cookie_editor.py
+post_night.py
+post_opsi2_now.py
+shopee_api.py
+sync_shopee.py
+import_links.py
+main.py
+
+# ═══ SISA PROYEK VIDEO (gak relevan) ═══
+*.ass
+*.vtt
+*.srt
+*.aac
+*.mp3
+*.wav
+concat_list.txt
+new_brand_hook.ass
+streetwear_hook.ass
+sample_sub.*
+sample_voice.*
+test_voice.*
+temp_audio_*
+inbox_manifest.json

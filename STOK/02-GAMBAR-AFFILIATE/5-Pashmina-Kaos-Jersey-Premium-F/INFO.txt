@@ -1,0 +1,7 @@
+PRODUK #5: Pashmina Kaos Jersey Premium Flowy
+Harga    : Rp29.000
+Kategori : hijab
+Detail   : bahan kaos jatuh, ga licin tanpa jarum pentul, adem dan gampang dibentuk
+
+Taruh 2-3 gambar di folder ini.
+Prompt gambar: python affiliate_flow.py prompt --product-id 5
