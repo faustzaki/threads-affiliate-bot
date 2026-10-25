@@ -179,7 +179,7 @@ def build_detail(nama, kategori):
     return templates.get(kategori, "bahan nyaman, cocok buat daily")
 
 
-def build_caption(nama, kategori, detail):
+def build_caption(nama, kategori, detail, seed=0):
     """
     Generate caption UNIK per produk, pakai masalah spesifik per kategori.
     Validasi quality gate + AI detection.
@@ -232,17 +232,32 @@ def build_caption(nama, kategori, detail):
 
     pool = masalah.get(kategori, masalah["bawahan"])
 
-    # template caption, variasikan struktur
+    # template caption — STRUKTUR BEDA-BEDA, bukan cuma ganti kata
     templates = [
+        # 1. spill + budget (paling umum)
         lambda p, m, d: f"spill {p} yang beneran gak {m} dong, budget 70rb.\n{d}",
+
+        # 2. tanya toko (buka percakapan)
         lambda p, m, d: f"kalian beli {p} di toko mana sih?\n{d}",
-        lambda p, m, d: f"ada yang tau {p} yang gak {m}?\nkayaknya semua yang murah pasti gitu deh",
+
+        # 3. keluhan pribadi (gak nyebut "spill")
+        lambda p, m, d: f"{d}\nada yang punya rekomendasi {p} lain?",
+
+        # 4. observasi (mulai dari fakta)
         lambda p, m, d: f"baru sadar semua {p} gue masalahnya sama.\n{d}",
-        lambda p, m, d: f"spill {p} yang gak {m} dong.\n{d}",
+
+        # 5. pengakuan gagal
+        lambda p, m, d: f"tiga kali ganti {p}, tiga kali juga kecewa.\n{d}",
+
+        # 6. pertanyaan retoris
+        lambda p, m, d: f"kenapa ya {p} yang bagus selalu mahal?\n{d}",
     ]
 
+    # rotasi template berdasarkan seed (product id) biar tiap produk beda struktur
+    start = (seed or sum(ord(c) for c in nama)) % len(templates)
+
     for i, (masalah_kata, detail_kata) in enumerate(pool):
-        tmpl = templates[i % len(templates)]
+        tmpl = templates[(start + i) % len(templates)]
         cap = tmpl(produk, masalah_kata, detail_kata)
         q = run_quality_gate(cap)
         ai_score, _ = check_ai_tells(cap)
@@ -256,7 +271,7 @@ def build_caption(nama, kategori, detail):
 # AUTOFILL
 # ─────────────────────────────────────────────────────────────
 
-def autofill(dry_run=False, page_id=None):
+def autofill(dry_run=False, page_id=None, force=False):
     print(f"\n{'='*68}")
     print(f"  AUTOFILL NOTION {'(DRY RUN)' if dry_run else ''}")
     print(f"{'='*68}\n")
@@ -293,8 +308,8 @@ def autofill(dry_run=False, page_id=None):
             skip += 1
             continue
 
-        # kalau udah lengkap, skip
-        if nama_now and "http" not in nama_now and link_now and "shopee" in link_now \
+        # kalau udah lengkap, skip (kecuali mode paksa)
+        if not force and nama_now and "http" not in nama_now and link_now and "shopee" in link_now \
                 and p_text(pr.get("Prompt Gambar")) and p_text(pr.get("Caption")):
             print(f"  ✓ [{pid_val}] {nama_now[:34]} udah lengkap -> skip")
             skip += 1
@@ -317,7 +332,8 @@ def autofill(dry_run=False, page_id=None):
         # bangun semua field
         kategori = detect_kategori(nama)
         detail = build_detail(nama, kategori)
-        caption, qscore, aiscore = build_caption(nama, kategori, detail)
+        seed = int(pid_val) if str(pid_val).isdigit() else 0
+        caption, qscore, aiscore = build_caption(nama, kategori, detail, seed=seed)
         prompt = build_image_prompt(nama, detail, kategori)
 
         # link affiliate
@@ -377,13 +393,14 @@ def main():
     ap = argparse.ArgumentParser(description="Auto-isi kolom Notion dari URL Shopee")
     ap.add_argument("--dry-run", action="store_true", help="Lihat dulu tanpa nulis")
     ap.add_argument("--page-id", help="Isi 1 baris tertentu")
+    ap.add_argument("--force", action="store_true", help="Regenerate walau udah lengkap")
     args = ap.parse_args()
 
     if not TOKEN:
         print("[!] Token Notion gak ketemu di config Hermes")
         return 1
 
-    return autofill(dry_run=args.dry_run, page_id=args.page_id)
+    return autofill(dry_run=args.dry_run, page_id=args.page_id, force=args.force)
 
 
 if __name__ == "__main__":
